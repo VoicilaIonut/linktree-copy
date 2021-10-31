@@ -1,0 +1,50 @@
+{% extends 'mylinks/base.html' %}
+{% load static %}
+{% load i18n %} 
+
+{% block account %}
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'mylinks/form.css' %}">
+<div class="container p-5">
+  <main class="form">
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-group row">
+          <label class="col-12 col-form-label" for="id_{{ field.name }}">{{ field.label }}</label>
+          <div class="col-12">
+            <input
+              type="{{ field.field.widget.input_type }}"
+              class="form-control"
+              name="{{ field.name }}"
+              id="id_{{ field.name }}"
+              value="{{ field.value|default:'' }}"
+            >
+          </div>
+          <div class="col-12 help-text">{{ field.help_text }} </div>
+        </div>
+        {% endfor %}
+
+        {% if form.errors %}
+         {% for field in form %}
+             {% for error in field.errors %} 
+                <div class="alert alert-danger">
+                     {{ error|escape }}
+                </div>
+             {% endfor %}
+         {% endfor %}
+        {% endif %}
+
+        {% if user.is_authenticated %}
+          <p class="errornote">Sunteti deja autentificat ca {{ username }}. Doriti sa va conectati la un alt cont?</p>
+        {% endif %}
+      <button class="w-100 btn btn-lg btn-primary my-2" type="submit">Sign in</button>
+    </form>
+  </main>
+</div>
+{% endblock %}
+
+
+

@@ -1,0 +1,42 @@
+{% extends 'mylinks/base.html' %}
+
+{% block content %}
+
+<div class="container p-5"> 
+	<div class="row justify-content-center">
+		<div class="card text-dark w-50 p-0 m-4">
+			<div class="card-header">
+				<h5 class="fs-2"> Tree links of user {{ user_page }}</h5>
+			</div>
+			{% for tree in object_list %}
+				<div class="card text-dark mb-3 text-center m-2">
+					<div class="card-body bg-light" >
+						{% if user.is_authenticated and user.username == user_page %}
+						<div class="row align-items-center">
+							<div class="col-8 text-start">
+								<h5 class="card-title m-0">
+									<a class="text-decoration-none" href="{% url 'tree_links' user_page tree.slug%}"> {{tree.name}} </a>
+								</h5>
+							</div>
+							<div class="col-4 text-end">
+								<form action="{% url 'delete_tree' user.username %}" method="post">
+									{% csrf_token %}
+									<button class="btn-sm btn-danger" type="submit" name="tree_pk" value={{tree.pk}}> Remove</button>
+								</form>
+							</div>
+						</div>
+						{% else %}
+						<h5 class="card-title m-0">
+							<a class="text-decoration-none"href="{% url 'tree_links' user_page tree.slug%}"> {{tree.name}} </a>
+						</h5>
+						{% endif %}
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	{% if user.is_authenticated and user.username == user_page %}
+		<a class="btn-lg btn-success text-decoration-none" href= "{% url 'add_tree' user.username %}"> Add a new link tree</a>
+	{% endif %}
+</div>
+{% endblock %}

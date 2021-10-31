@@ -1,0 +1,35 @@
+{% load static %}
+<header>
+<link rel="stylesheet" type="text/css" href="{% static 'mylinks/navbar.css' %}">
+  <div>
+    <h3 class="float-md-start mb-0">MyLinks</h3>
+  <nav class="nav nav-masthead justify-content-center float-md-end">
+    <a class="nav-link" href="/">Home</a>
+    {% if user.is_authenticated %}
+    <a class="nav-link" href="{% url 'user_links' user.username %}"> My Links</a>
+    <a class="nav-item">
+      <div class="dropdown">
+        <a type="button" class="nav-link dropdown-toggle px-3"  id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="true">
+          {{user.username}}
+        </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <li><a class="dropdown-item" href="/logout"> Deconectare </a></li>
+        <li><a class="dropdown-item" href="/password-reset">Schimba parola</a></li>
+      </ul>
+    </a>
+    {% else %}
+    <a class="nav-item">
+      <div class="dropdown">
+        <a type="button" class="nav-link dropdown-toggle px-3"  id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="true">
+          Account
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+          <li><a class="dropdown-item"  href='/login'> Autentificare </a></li>
+          <li><a class="dropdown-item" href='/register'> Inregistrare </a></li>
+        </ul>
+      </div>
+    </a>
+    {% endif %}
+  </nav>
+</div>
+</header>

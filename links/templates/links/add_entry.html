@@ -1,0 +1,40 @@
+{% extends 'mylinks/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'mylinks/form.css' %}">
+
+
+<div class="container p-5">
+  <main class="form">
+    <form method="post">
+  	{% csrf_token %}
+      {% for field in form %}
+        <div class="form-group row">
+          <label class="col-12 col-form-label" for="id_{{ field.name }}">{{ field.label }}</label>
+          <div class="col-12">
+            <input
+              type="{{ field.field.widget.input_type }}"
+              class="form-control"
+              name="{{ field.name }}"
+              id="id_{{ field.name }}"
+              value="{{ field.value|default:'' }}"
+            >
+          </div>
+          <div class="col-12 help-text ">{{ field.help_text }} </div>
+        </div>
+        {% endfor %}
+    <button class="btn btn btn-success w-75 my-3" type="submit">Add</button>
+  	{% if form.errors %}
+  		{% for field in form %}
+  			{% for error in field.errors %} 
+  				<div class="alert alert-danger">
+  				{{ error|escape }}
+  				</div>
+  			{% endfor %}
+  		{% endfor %}
+  	{% endif %}
+    </form>
+  </main>
+</div>
+{% endblock %}
